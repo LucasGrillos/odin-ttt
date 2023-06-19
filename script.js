@@ -1,15 +1,11 @@
 const Gameboard = (() => {
-    let gameArray = [
-        '', '', '',
-        '', '', '',
-        '', '', ''
-    ]
+    let gameArray = Array(9).fill('');
 
-    const getGameboard = () => {
+    const getBoard = () => {
         return gameArray;
     }
 
     return {
-        getGameboard
+        getBoard
     }
 })();
