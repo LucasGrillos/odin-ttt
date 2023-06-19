@@ -1,3 +1,7 @@
+:root {
+    --hover-black: #101010; 
+}
+
 * {
     box-sizing: border-box;
 }
@@ -24,7 +28,6 @@ body {
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
 }
 
 .tile {
@@ -32,6 +35,15 @@ body {
     width: 100%;
     border-right: 1px solid white;
     border-bottom: 1px solid white;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tile:hover {
+    background-color: var(--hover-black);
 }
 
 .no-bottom {
@@ -40,4 +52,25 @@ body {
 
 .no-right {
     border-right: none;
+}
+
+.mark {
+    
+}
+
+.x-mark {
+    transform: rotate(45deg);
+    height: 50%;
+    width: 10px;
+    background-color: white;
+}
+
+.x-mark::after {
+    content: "";
+    position: absolute;
+
+    transform: rotate(90deg);
+    height: 100%;
+    width: 100%;
+    background-color: white;
 }
