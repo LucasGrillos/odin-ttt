@@ -34,15 +34,22 @@ const Gameplay = (() => {
     }
 
     const playerTurn = (event) => {
-        tileNumber = event.target.dataset.tile; // dataset.tile points to the data-tile attribute
-        let board = Gameboard.getBoard();
-        if (!board[tileNumber]) {
-            Gameboard.markBoard(tileNumber, currentPlayer.getMark());
-            DisplayController.renderBoard();
-            CheckWin();
+        if(!event.target.id) { // checks if the mark itself was clicked on -- the mark itself has no id
+            DisplayController.flashTileRed(Number(event.target.parentNode.dataset.tile)) // finds the parent tile number and sends it to flashTileRed  
         }
+
         else {
-            DisplayController.flashTileRed(tileNumber)
+            console.log(event.target.id);
+            tileNumber = event.target.dataset.tile; // dataset.tile points to the data-tile attribute
+            let board = Gameboard.getBoard();
+            if (!board[tileNumber]) {
+                Gameboard.markBoard(tileNumber, currentPlayer.getMark());
+                DisplayController.renderBoard();
+                CheckWin();
+            }
+            else {
+                DisplayController.flashTileRed(tileNumber)
+            }
         }
     };
 
@@ -59,7 +66,6 @@ const DisplayController = (() => {
 
     const flashTileRed = (tileNumber) => {
         let tile = document.querySelector(`#tile${tileNumber}`);
-        console.log(tile)
         tile.style.animation = 'tile-flash-red .2s ease-in-out';
         setTimeout(() => {
             tile.style.animation = '';
