@@ -31,15 +31,12 @@ body {
 }
 
 .tile {
+    position: relative;
     height: 100%;
     width: 100%;
     border-right: 1px solid white;
     border-bottom: 1px solid white;
     cursor: pointer;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .tile:hover {
@@ -55,12 +52,16 @@ body {
 }
 
 .mark {
-    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .x-mark {
-    transform: rotate(45deg);
-    height: 50%;
+    visibility: hidden;
+    transform: translate(-50%, -50%) rotate(45deg);
+    height: 55%;
     width: 10px;
     background-color: white;
 }
@@ -73,4 +74,13 @@ body {
     height: 100%;
     width: 100%;
     background-color: white;
+}
+
+.o-mark {
+    visibility: hidden;
+    height: 50%;
+    width: 50%;
+    border: 10px solid white;
+    border-radius: 50%;
+    
 }
