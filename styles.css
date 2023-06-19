@@ -30,5 +30,14 @@ body {
 .tile {
     height: 100%;
     width: 100%;
-    border: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+.no-bottom {
+    border-bottom: none;
+}
+
+.no-right {
+    border-right: none;
 }
