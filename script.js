@@ -22,6 +22,25 @@ const Gameplay = (() => {
 
 })();
 
-const displayController = (() => {
+const DisplayController = (() => {
 
+    const makeVisible = (mark, index) => {
+        document.querySelector(`#tile${index}`).querySelector(`.${mark}-mark`).style.visibility = 'visible';
+        // finds the tile based on index, then finds the mark to fill based on mark passed, then sets visibility to 0
+    }
+
+    const renderBoard = () => {
+        let board = Gameboard.getBoard();
+        for (var i=0; i<board.length; i++) {
+            if (board[i]) {
+                makeVisible(board[i], i);
+            }
+        }
+    };
+
+    const addTileListeners = () => {
+        console.log(document.querySelector('.gameboard').children);
+    }
+
+    return { renderBoard , addTileListeners };
 })();
