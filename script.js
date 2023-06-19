@@ -12,8 +12,8 @@ const Gameboard = (() => {
     let gameArray = Array(9).fill('');
     
     const getBoard = () => gameArray;
-    const markBoard = (tile, mark) => {
-        gameArray[tile] = mark;
+    const markBoard = (tileNumber, mark) => {
+        gameArray[tileNumber] = mark;
     }
 
     return { getBoard, markBoard };
@@ -29,31 +29,41 @@ const Gameplay = (() => {
         currentPlayer = (currentPlayer.getName() == player1.getName() ? player2 : player1)
     };
 
-    const playerTurn = (tile) => {
-        let board = Gameboard.getBoard()
-        if (!board[tile]) {
-            Gameboard.markBoard(tile, currentPlayer.getMark());
+    const CheckWin = () => {
+        let board = Gameboard.getBoard();
+    }
+
+    const playerTurn = (event) => {
+        tileNumber = event.target.dataset.tile; // dataset.tile points to the data-tile attribute
+        let board = Gameboard.getBoard();
+        if (!board[tileNumber]) {
+            Gameboard.markBoard(tileNumber, currentPlayer.getMark());
+            DisplayController.renderBoard();
+            CheckWin();
         }
-        switchPlayers();
-        DisplayController.renderBoard();
-        
+        else {
+            DisplayController.flashTileRed(tileNumber)
+        }
     };
 
     return { playerTurn };
 })();
 
 const DisplayController = (() => {
-
-    let tiles = Array.from(document.querySelector('.gameboard').children);
+    const tiles = Array.from(document.querySelector('.gameboard').children);
 
     const makeVisible = (mark, index) => {
         document.querySelector(`#tile${index}`).querySelector(`.${mark}-mark`).style.visibility = 'visible';
         // finds the tile based on index, then finds the mark to fill based on mark passed, then sets visibility to 0
-    }
+    };
 
-    const tileListener = (event) => {
-        Gameplay.playerTurn(event.target.dataset.tile) 
-        // dataset.tile points to the data-tile attribute
+    const flashTileRed = (tileNumber) => {
+        let tile = document.querySelector(`#tile${tileNumber}`);
+        console.log(tile)
+        tile.style.animation = 'tile-flash-red .2s ease-in-out';
+        setTimeout(() => {
+            tile.style.animation = '';
+        }, 200)
     };
 
     const renderBoard = () => {
@@ -67,15 +77,15 @@ const DisplayController = (() => {
 
     const removeTileListeners = () => {
         tiles.forEach(tile => {
-            tile.removeEventListener("click", tileListener)
+            tile.removeEventListener("click", Gameplay.playerTurn)
         })
-    }
+    };
 
     const addTileListeners = () => {
         tiles.forEach(tile => {
-            tile.addEventListener("click", tileListener);
+            tile.addEventListener("click", Gameplay.playerTurn);
         });
     };
 
-    return { renderBoard , addTileListeners , removeTileListeners};
+    return { renderBoard , addTileListeners , removeTileListeners, flashTileRed};
 })();
