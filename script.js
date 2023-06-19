@@ -15,8 +15,17 @@ const Gameboard = (() => {
     const markBoard = (tileNumber, mark) => {
         gameArray[tileNumber] = mark;
     }
+    const getMarksIndex = (mark) => {
+        let marksIndex = [];
+        for (var i=0;i<gameArray.length;i++) {
+            if (mark==gameArray[i]) {
+                marksIndex.push(i);
+            }
+        }
+        return(marksIndex);
+    }
 
-    return { getBoard, markBoard };
+    return { getBoard, markBoard , getMarksIndex };
 })();
 
 
@@ -24,22 +33,31 @@ const Gameplay = (() => {
     let player1 = player('x', 'Player 1');
     let player2 = player('o', 'Player 2');
     let currentPlayer = player1;
+    const winConditions = [
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,4,8],
+        [2,4,6]
+    ]
 
     const switchPlayers = () => {
         currentPlayer = (currentPlayer.getName() == player1.getName() ? player2 : player1)
     };
 
     const CheckWin = () => {
-        let board = Gameboard.getBoard();
+        let marksIndex = Gameboard.getMarksIndex(currentPlayer.getMark())
+        
     }
 
     const playerTurn = (event) => {
-        if(!event.target.id) { // checks if the mark itself was clicked on -- the mark itself has no id
+        if(!event.target.id) { // checks if prevously filled mark itself was clicked on -- the mark itself has no id
             DisplayController.flashTileRed(Number(event.target.parentNode.dataset.tile)) // finds the parent tile number and sends it to flashTileRed  
         }
-
-        else {
-            console.log(event.target.id);
+        else { // 
             tileNumber = event.target.dataset.tile; // dataset.tile points to the data-tile attribute
             let board = Gameboard.getBoard();
             if (!board[tileNumber]) {
