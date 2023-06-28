@@ -12,9 +12,11 @@ const Gameboard = (() => {
     let gameArray = Array(9).fill('');
     
     const getBoard = () => gameArray;
+
     const markBoard = (tileNumber, mark) => {
         gameArray[tileNumber] = mark;
     }
+
     const getMarksIndex = (mark) => {
         let marksIndex = [];
         for (var i=0;i<gameArray.length;i++) {
@@ -23,6 +25,8 @@ const Gameboard = (() => {
             }
         }
         return(marksIndex);
+
+        // finds the indices of the indicated players mark, returning it to checkWin() for comparison
     }
 
     return { getBoard, markBoard , getMarksIndex };
@@ -42,16 +46,29 @@ const Gameplay = (() => {
         [6,7,8],
         [0,4,8],
         [2,4,6]
-    ]
+    ];
+
+    const win = () => {
+        
+    }
 
     const switchPlayers = () => {
-        currentPlayer = (currentPlayer.getName() == player1.getName() ? player2 : player1)
+        currentPlayer = (currentPlayer.getName() == player1.getName() ? player2 : player1);
     };
 
     const CheckWin = () => {
-        let marksIndex = Gameboard.getMarksIndex(currentPlayer.getMark())
+        let marksIndex = Gameboard.getMarksIndex(currentPlayer.getMark());
+        let win = winConditions.filter(condition => {
+            if (condition.every(index => { return marksIndex.includes(index) }) ) {
+                return condition;
+            }
+            // runs through each win condition and saves if each index is found in the indexes of all of the marks 
+        });
         
-    }
+        if (!win.length) {
+            switchPlayers();
+        }
+    };
 
     const playerTurn = (event) => {
         if(!event.target.id) { // checks if prevously filled mark itself was clicked on -- the mark itself has no id
