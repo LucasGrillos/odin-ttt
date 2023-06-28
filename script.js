@@ -48,25 +48,25 @@ const Gameplay = (() => {
         [2,4,6]
     ];
 
-    const win = () => {
-        
-    }
-
     const switchPlayers = () => {
         currentPlayer = (currentPlayer.getName() == player1.getName() ? player2 : player1);
     };
 
-    const CheckWin = () => {
+    const checkWin = () => {
         let marksIndex = Gameboard.getMarksIndex(currentPlayer.getMark());
-        let win = winConditions.filter(condition => {
+        let wins = winConditions.filter(condition => {
             if (condition.every(index => { return marksIndex.includes(index) }) ) {
                 return condition;
             }
             // runs through each win condition and saves if each index is found in the indexes of all of the marks 
         });
         
-        if (!win.length) {
+        if (!wins.length) {
             switchPlayers();
+        }
+
+        else {
+            DisplayController.displayWin(wins, currentPlayer);
         }
     };
 
@@ -80,7 +80,7 @@ const Gameplay = (() => {
             if (!board[tileNumber]) {
                 Gameboard.markBoard(tileNumber, currentPlayer.getMark());
                 DisplayController.renderBoard();
-                CheckWin();
+                checkWin();
             }
             else {
                 DisplayController.flashTileRed(tileNumber)
@@ -128,5 +128,9 @@ const DisplayController = (() => {
         });
     };
 
-    return { renderBoard , addTileListeners , removeTileListeners, flashTileRed};
+    const displayWin = (wins, currentPlayer) => {
+        console.log(`Player ${currentPlayer.mark} wins with positions ${wins}`);
+    }
+
+    return { renderBoard , addTileListeners , removeTileListeners, flashTileRed, displayWin };
 })();
